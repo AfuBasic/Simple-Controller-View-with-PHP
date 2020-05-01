@@ -17,6 +17,10 @@ class Controller
 	public function view($page, $data = [])
 	{
 		$app = $this;
+		foreach($data as $key => $value) {
+			$$key = $value;
+		}
+
 		include $this->config->base_dir."/views/".$page.".php";
 	}
 
