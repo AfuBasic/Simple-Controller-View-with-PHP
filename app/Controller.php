@@ -33,8 +33,7 @@ class Controller
 
     public function isGuest()
     {
-        if(!isset($_SESSION['user']))
-            $this->redirect('welcome/login');
+        return !isset($_SESSION['user']);
     }
 
 
