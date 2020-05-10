@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 class Controller
 {
 	protected $config;
@@ -29,9 +28,9 @@ class Controller
 		echo "<script>window.location='".$this->url($url)."'</script>";
 	}
 
-	public function isGuest()
+	public function isGuest($session_key)
 	{
-		if(!isset($_SESSION['user'])) 
+		if(!isset($_SESSION[$session_key]))
 			$this->redirect('welcome/login');
 	}
 
@@ -57,4 +56,6 @@ class Controller
 
 		return new $model();
 	}
+
+
 }
