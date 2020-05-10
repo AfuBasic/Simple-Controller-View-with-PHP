@@ -9,7 +9,7 @@ class Model
         $config = include "config.php";
         $config = (object) $config['database'];
 
-        $this->db = new mysqli($config->host, $config->user, $config->pass, $config->db);
+        $this->db = new mysqli($config->host, $config->user, $config->pass, $config->db) or die($this->db->error);
     }
 
     public function select_many($table, $where = '', $orderBy = '' )
@@ -24,7 +24,7 @@ class Model
             $query .= " ORDER BY ".$orderBy;
         }
 
-        $query = $this->db->query($query);
+        $query = $this->db->query($query)  or die($this->db->error);;
 
         $data = [];
 
@@ -40,7 +40,7 @@ class Model
     public function select_one($table, $where) {
         $query = "SELECT * FROM ".$table. " WHERE ". $where;
 
-        $query = $this->db->query($query);
+        $query = $this->db->query($query) or die($this->db->error);
 
         if($query->num_rows > 0)
             return $query->fetch_object();
@@ -65,7 +65,7 @@ class Model
 
         $query = substr($query, 0, -1).")";
 
-        $this->db->query($query);
+        $this->db->query($query)  or die($this->db->error);;
 
         return true;
     }

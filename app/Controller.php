@@ -1,61 +1,68 @@
 <?php
+
 class Controller
 {
-	protected $config;
+    public $config;
 
-	public function __construct()
-	{
-		$this->config = (object)include "config.php";
-	}
+    public function __construct()
+    {
+        $this->config = (object) include "config.php";
+    }
 
-	public function url($route)
-	{
-		return $this->config->base_url."/".$route;
-	}
+    public function url($route)
+    {
+        return $this->config->base_url."/".$route;
+    }
 
-	public function view($page, $data = [])
-	{
-		$app = $this;
-		foreach($data as $key => $value) {
-			$$key = $value;
-		}
+    public function view($page_to_view, $data = [])
+    {
 
-		include $this->config->base_dir."/views/".$page.".php";
-	}
+        $app = $this;
 
-	public function redirect($url)
-	{
-		echo "<script>window.location='".$this->url($url)."'</script>";
-	}
+        foreach($data as $key => $value) {
+            $$key = $value;
+        }
 
-	public function isGuest($session_key)
-	{
-		if(!isset($_SESSION[$session_key]))
-			$this->redirect($this->config->default_route);
-	}
+        include $this->config->base_dir."/views/".$page_to_view.".php";
+    }
 
+    public function redirect($url)
+    {
+        echo "<script>window.location='".$this->url($url)."'</script>";
+    }
 
-	public function setSession($data = [] ) {
-		if(!empty($data) && is_array($data)) {
-			foreach($data as $key => $value) {
-				$_SESSION[$key] = $value;
-			}
-		}
-	}
-
-	public function deleteSession($key) {
-		unset($_SESSION[$key]);
-	}
+    public function isGuest()
+    {
+        if(!isset($_SESSION['user']))
+            $this->redirect('welcome/login');
+    }
 
 
-	public function loadModel($model) {
-		include "model.php";
+    public function setSession($data = [] ) {
+        if(!empty($data) && is_array($data)) {
+            foreach($data as $key => $value) {
+                $_SESSION[$key] = $value;
+            }
+        }
+    }
 
-		$model = ucfirst($model);
-		include "model/".$model.".php";
+    public function session($key) {
+        return $_SESSION[$key];
+    }
 
-		return new $model();
-	}
+    public function deleteSession($key) {
+        unset($_SESSION[$key]);
+    }
+
+
+    public function loadModel($model) {
+        include "model.php";
+
+        $model = ucfirst($model);
+        include "model/".$model.".php";
+
+        return new $model();
+    }
 
     public function post($key = "")
     {
