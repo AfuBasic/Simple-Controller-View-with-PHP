@@ -31,7 +31,7 @@ class Controller
 	public function isGuest($session_key)
 	{
 		if(!isset($_SESSION[$session_key]))
-			$this->redirect('welcome/login');
+			$this->redirect($this->config->default_route);
 	}
 
 
@@ -57,5 +57,15 @@ class Controller
 		return new $model();
 	}
 
+    public function post($key = "")
+    {
+        if($key != "" && isset($_POST[$key])) {
+            return $_POST[$key];
+        }
+        elseif($key == "") {
+            return $_POST;
+        }
 
+        return "";
+    }
 }

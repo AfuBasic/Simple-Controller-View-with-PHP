@@ -15,7 +15,6 @@ class App
 		$data = [];
 
 		$path = explode("/", $path);
-		
 
 		if(isset($path[0])) {
 			$data['controller'] = $path[0];
@@ -60,6 +59,5 @@ class App
 		call_user_func_array([$class, $data['method']], $data['args']);
 
 	}
-
 
 }
