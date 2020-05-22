@@ -1,6 +1,6 @@
 <?php
 
-class Controller
+class Controller extends App
 {
     public $config;
 
@@ -73,5 +73,10 @@ class Controller
         }
 
         return "";
+    }
+
+    public function currentRoute()
+    {
+        return $this->getRouteDetails();
     }
 }

@@ -3,6 +3,9 @@
 class App
 {	
 	protected $config;
+	public $method;
+	public $controller;
+
 
 	public function __construct($config) {
 		$this->config = (object) $config;
@@ -18,6 +21,7 @@ class App
 
 		if(isset($path[0])) {
 			$data['controller'] = $path[0];
+			$this->controller = $data['controller'];
 		}
 
 		unset($path[0]);
@@ -27,6 +31,8 @@ class App
 		} else {
 			$data['method']		= "index";
 		}
+
+		$this->method 		= $data['method'];
 
 		unset($path[1]);
 
@@ -49,6 +55,7 @@ class App
 
 
 		include "Controller.php";
+        include "constants.php";
 
 		$class = ucfirst($data['controller']);
 
@@ -58,6 +65,18 @@ class App
 
 		call_user_func_array([$class, $data['method']], $data['args']);
 
+	}
+
+	public function getRouteDetails()
+	{
+		$this->load();
+
+		$route_data = (object) [
+			'controller'	=> $this->controller,
+			'method'		=> $this->method
+		];
+
+		return $route_data;
 	}
 
 }
