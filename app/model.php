@@ -11,7 +11,12 @@ class Model
 
         $this->db = new mysqli($config->host, $config->user, $config->pass, $config->db) or die($this->db->error);
     }
+    
+    if($limit != "") {
+        $query .= " LIMIT ".$limit;
+    }
 
+    
     public function select_many($table, $where = '', $orderBy = '' )
     {
         $query = "SELECT * FROM ".$table." ";
